@@ -1,4 +1,4 @@
-﻿// script.js - Envío con fetch a Formspree + popup
+// script.js - Envío con fetch a Formspree + popup con retardo de 2 segundos
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
   const popup = document.getElementById('popup');
@@ -44,7 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
 
-    // validación nativa
     if (!form.checkValidity()) {
       form.reportValidity();
       return;
@@ -60,6 +59,11 @@ document.addEventListener('DOMContentLoaded', () => {
     try {
       const formData = new FormData(form);
 
+      // 🔸 Mostrar el mensaje 2 segundos después de iniciar el envío
+      setTimeout(() => {
+        showPopup();
+      }, 2000);
+
       const response = await fetch(ENDPOINT, {
         method: 'POST',
         body: formData,
@@ -68,7 +72,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         form.reset();
-        showPopup();
         showFeedback('Mensaje enviado correctamente', true);
       } else {
         let msg = 'No se pudo enviar. Intenta nuevamente.';
