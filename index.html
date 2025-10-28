@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="utf-8" />
@@ -19,7 +19,7 @@
     </div>
   </header>
 
-  <!-- Servicios (3 + 3) -->
+  <!-- Servicios -->
   <main>
     <section id="servicios" class="section servicios">
       <div class="container">
@@ -27,25 +27,29 @@
 
         <div class="tarjetas">
           <article class="tarjeta">
-            <img src="assets/mindfulness.jpg/icons/mindfulness.svg" alt="Mindfulness" class="icono" aria-hidden="true">
+            <img src="assets/mindfulness.jpg" alt="Mindfulness" class="foto-servicio">
+            <img src="assets/icons/mindfulness.svg" alt="Icono Mindfulness" class="icono">
             <h3>Sesión Mindfulness</h3>
             <p>(online/virtual) — 35 min · S/50</p>
           </article>
 
           <article class="tarjeta">
-            <img src="assets/banos-relajantes.jpg/icons/banos-relajantes.svg" alt="Baño relajante" class="icono" aria-hidden="true">
+            <img src="assets/banos-relajantes.jpg" alt="Baño relajante" class="foto-servicio">
+            <img src="assets/icons/banos-relajantes.svg" alt="Icono baño relajante" class="icono">
             <h3>Baño de Hierbas Relajante</h3>
             <p>2 infusiones + 2 inciensos · S/25 (envío aparte)</p>
           </article>
 
           <article class="tarjeta">
-            <img src="assets/banos-dormir.jpg/icons/banos-dormir.svg" alt="Baño para dormir" class="icono" aria-hidden="true">
+            <img src="assets/banos-dormir.jpg" alt="Baño para dormir" class="foto-servicio">
+            <img src="assets/icons/banos-dormir.svg" alt="Icono baño dormir" class="icono">
             <h3>Baño de Hierbas para Dormir</h3>
             <p>2 infusiones + 2 inciensos · S/25 (envío aparte)</p>
           </article>
 
           <article class="tarjeta">
-            <img src="assets/terapia-holistica.jpg/icons/terapia-holistica.svg" alt="Terapia holística" class="icono" aria-hidden="true">
+            <img src="assets/terapia-holistica.jpg" alt="Terapia holística" class="foto-servicio">
+            <img src="assets/icons/terapia-holistica.svg" alt="Icono terapia holística" class="icono">
             <h3>Terapia Holística</h3>
             <p>(online/virtual) · 4 sesiones S/250 · 6 sesiones S/350</p>
             <p class="muted">Un espacio de terapia, meditación y orientación para sanar cuerpo y mente.</p>
@@ -53,14 +57,16 @@
 
           <article class="tarjeta especial">
             <span class="badge">Recomendado</span>
-            <img src="assets/sesion-personalizada.jpg/icons/sesion-personalizada.svg" alt="Sesión personalizada" class="icono" aria-hidden="true">
+            <img src="assets/sesion-personalizada.jpg" alt="Sesión personalizada" class="foto-servicio">
+            <img src="assets/icons/sesion-personalizada.svg" alt="Icono sesión personalizada" class="icono">
             <h3>Sesión Personalizada</h3>
             <p>S/70</p>
             <p class="muted">Orientación en tema específico y aclaración de objetivos.</p>
           </article>
 
           <article class="tarjeta">
-            <img src="assets/duelo.jpg/icons/duelo.svg" alt="Terapia de duelo" class="icono" aria-hidden="true">
+            <img src="assets/duelo.jpg" alt="Terapia de duelo" class="foto-servicio">
+            <img src="assets/icons/duelo.svg" alt="Icono duelo" class="icono">
             <h3>Terapia de Duelo</h3>
             <p>(online/virtual) · 6 sesiones S/350</p>
             <p class="muted">Acompañamiento y guía a través de las etapas del duelo.</p>
@@ -84,10 +90,7 @@
       <div class="container">
         <h2 class="section-title">Reserva tu experiencia</h2>
 
-        <!-- FORM: action está presente como fallback, pero el envío real lo hace script.js via fetch -->
         <form id="contact-form" action="https://formspree.io/f/xvgbjrvk" method="POST" autocomplete="on">
-          <!-- Si quieres redirección clásica sin JS, descomenta y actualiza _next:
-               <input type="hidden" name="_next" value="https://TU_DOMINIO/vercel_o_netlify/?success=true"> -->
           <label for="nombre">Nombre</label>
           <input id="nombre" name="nombre" type="text" required>
 
@@ -117,7 +120,7 @@
     </section>
   </main>
 
-  <!-- Popup de confirmación -->
+  <!-- Popup -->
   <div id="popup" class="popup" aria-hidden="true">
     <div class="popup-inner" role="dialog" aria-modal="true" aria-labelledby="popup-text">
       <button class="popup-close" id="popup-close" aria-label="Cerrar">✕</button>
@@ -132,7 +135,6 @@
       <p class="frase">
         Que tu corazón lata fuerte
         <span class="heart" aria-hidden="true">
-          <!-- corazón delineado dorado (inline SVG, sin relleno) -->
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="heart-svg">
             <path d="M12 20s-6.5-4.35-9-7.03C-0.5 9.69 3.2 4.5 7.5 6.5 9.2 7.3 10 9 12 11c2-2 2.8-3.7 4.5-4.5 4.3-2 8 3.19 4.5 6.47C18.5 15.65 12 20 12 20z"
               stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
@@ -144,7 +146,6 @@
 
   <script src="script.js"></script>
 </body>
-
 </html>
 
 
