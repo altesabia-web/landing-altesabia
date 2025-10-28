@@ -1,4 +1,4 @@
-﻿:root{
+:root{
   --gold: #bfa14a;    /* dorado (títulos, acentos) */
   --gold-dark: #a67c00;
   --cream: #fffaf2;   /* crema suave */
@@ -222,5 +222,69 @@ input,select,textarea{
 @media (min-width:601px) and (max-width:1024px){
   .tarjetas {
     grid-template-columns: repeat(2,1fr);
+  }
+}
+
+/* --- POPUP CORREGIDO --- */
+.popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0,0,0,0.55);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 999;
+}
+
+.popup[aria-hidden="false"] {
+  visibility: visible;
+  opacity: 1;
+}
+
+.popup-inner {
+  background: var(--white);
+  color: var(--text);
+  padding: 24px 32px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  animation: fadeInScale 0.3s ease;
+  position: relative;
+  max-width: 320px;
+  width: 90%;
+}
+
+.popup-close {
+  position: absolute;
+  top: 6px;
+  right: 10px;
+  background: none;
+  border: none;
+  color: var(--gold);
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.popup p {
+  margin: 0;
+  font-weight: 600;
+  color: var(--gold-dark);
+  font-size: 1rem;
+}
+
+@keyframes fadeInScale {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
   }
 }
