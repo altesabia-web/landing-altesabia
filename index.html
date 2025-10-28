@@ -114,13 +114,21 @@
 
           <div id="form-feedback" role="status" aria-live="polite" class="feedback" hidden></div>
 
-          <button type="submit" class="btn-cta">Enviar</button>
+          <button id="submit-btn" type="submit" class="btn-cta">Enviar</button>
         </form>
       </div>
     </section>
   </main>
 
-    <!-- Footer -->
+  <!-- Popup (controlado por JS) -->
+  <div id="popup" class="popup" aria-hidden="true">
+    <div class="popup-inner" role="dialog" aria-modal="true" aria-labelledby="popup-text">
+      <button class="popup-close" id="popup-close" aria-label="Cerrar">✕</button>
+      <p id="popup-text">Gracias — tu mensaje fue enviado.</p>
+    </div>
+  </div>
+
+  <!-- Footer -->
   <footer class="site-footer">
     <div class="container">
       <p class="disclaimer">© 2025 Áltesabia</p>
@@ -136,9 +144,114 @@
     </div>
   </footer>
 
-  <script src="script.js"></script>
+  <!-- SCRIPT: muestra popup a los 2s y envía en background -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const form = document.getElementById('contact-form');
+    const popup = document.getElementById('popup');
+    const popupText = document.getElementById('popup-text');
+    const popupClose = document.getElementById('popup-close');
+    const feedback = document.getElementById('form-feedback');
+    const submitBtn = document.getElementById('submit-btn');
+
+    if (!form) return;
+
+    // Mostrar / ocultar popup
+    const showPopup = (text) => {
+      if (!popup) return;
+      popupText.textContent = text || '';
+      popup.setAttribute('aria-hidden', 'false');
+    };
+    const hidePopup = () => {
+      if (!popup) return;
+      popup.setAttribute('aria-hidden', 'true');
+    };
+
+    // Cerrar con botón, clic fuera o Esc
+    if (popupClose) popupClose.addEventListener('click', hidePopup);
+    window.addEventListener('click', (ev) => {
+      if (ev.target === popup) hidePopup();
+    });
+    window.addEventListener('keydown', (ev) => {
+      if (ev.key === 'Escape') hidePopup();
+    });
+
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      // Validación nativa
+      if (!form.checkValidity()) {
+        form.reportValidity();
+        return;
+      }
+
+      // Bloquear botón
+      if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.setAttribute('aria-busy', 'true');
+        submitBtn.textContent = 'Enviando...';
+      }
+
+      // Mostrar "Enviando..." en popup
+      showPopup('Enviando mensaje...');
+
+      // Cambiar a "Gracias..." tras 2s aunque el envío siga
+      const thanksTimer = setTimeout(() => {
+        popupText.textContent = 'Gracias — tu mensaje fue enviado.';
+      }, 2000);
+
+      // Envío en background (fetch)
+      (async () => {
+        try {
+          const formData = new FormData(form);
+          const response = await fetch(form.action, {
+            method: form.method || 'POST',
+            body: formData,
+            headers: { Accept: 'application/json' }
+          });
+
+          if (!response.ok) {
+            // Si formspree devuelve error, mostrar mensaje del servidor si existe
+            let msg = 'No se pudo enviar el formulario. Intenta de nuevo.';
+            try {
+              const json = await response.json();
+              if (json && json.errors && Array.isArray(json.errors)) {
+                msg = json.errors.map(x => x.message).join(' ');
+              } else if (json && json.message) {
+                msg = json.message;
+              }
+            } catch (_) {}
+            clearTimeout(thanksTimer);
+            popupText.textContent = msg;
+          } else {
+            // Envío OK: limpiamos formulario (pero dejamos popup mostrado)
+            form.reset();
+          }
+        } catch (err) {
+          // Error de conexión / fetch
+          clearTimeout(thanksTimer);
+          popupText.textContent = 'Error de conexión. Revisa tu internet e intenta nuevamente.';
+          console.error('Fetch error:', err);
+        } finally {
+          // reactivar botón tras 1s para que no sean clics inmediatos
+          setTimeout(() => {
+            if (submitBtn) {
+              submitBtn.disabled = false;
+              submitBtn.removeAttribute('aria-busy');
+              submitBtn.textContent = 'Enviar';
+            }
+          }, 1000);
+          // auto-cerrar popup 4s después de mostrar el "Gracias"
+          setTimeout(() => {
+            hidePopup();
+          }, 4000);
+        }
+      })();
+    });
+  });
+  </script>
+
 </body>
 </html>
-
 
 
