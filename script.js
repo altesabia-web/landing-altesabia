@@ -1,8 +1,6 @@
-// script.js - Envío con fetch a Formspree + popup con retardo de 2 segundos
+// script.js - Envío con fetch a Formspree + mensaje centrado con retardo de 2 segundos
 document.addEventListener('DOMContentLoaded', () => {
   const form = document.getElementById('contact-form');
-  const popup = document.getElementById('popup');
-  const popupClose = document.getElementById('popup-close');
   const feedback = document.getElementById('form-feedback');
 
   if (!form) return;
@@ -10,36 +8,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const submitButton = form.querySelector('button[type="submit"]');
   const ENDPOINT = 'https://formspree.io/f/xvgbjrvk'; // tu endpoint Formspree
 
-  const showPopup = () => {
-    if (!popup) return;
-    popup.setAttribute('aria-hidden', 'false');
-    if (popupClose) popupClose.focus();
-    clearTimeout(window._altesabiaPopupTimer);
-    window._altesabiaPopupTimer = setTimeout(() => {
-      popup.setAttribute('aria-hidden', 'true');
-    }, 6000);
-  };
-
-  const hidePopup = () => {
-    if (!popup) return;
-    popup.setAttribute('aria-hidden', 'true');
-    clearTimeout(window._altesabiaPopupTimer);
-  };
-
   const showFeedback = (msg, ok = true) => {
     if (!feedback) return;
     feedback.hidden = false;
     feedback.textContent = msg;
     feedback.style.background = ok ? 'var(--gold)' : '#c94b4b';
+    feedback.style.color = ok ? '#000' : '#fff';
+    feedback.style.textAlign = 'center';
+    feedback.style.marginTop = '1rem';
+    feedback.style.padding = '10px';
+    feedback.style.borderRadius = '8px';
+    feedback.style.transition = 'opacity 0.4s ease';
+    feedback.style.opacity = '1';
+
     setTimeout(() => {
-      feedback.hidden = true;
+      feedback.style.opacity = '0';
+      setTimeout(() => {
+        feedback.hidden = true;
+      }, 400);
     }, 6000);
   };
-
-  // Detecta ?success=true en la URL (si usas redirección _next)
-  if (new URLSearchParams(window.location.search).get('success') === 'true') {
-    showPopup();
-  }
 
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -61,7 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
       // 🔸 Mostrar el mensaje 2 segundos después de iniciar el envío
       setTimeout(() => {
-        showPopup();
+        showFeedback('Gracias, tu mensaje fue enviado 💫', true);
       }, 2000);
 
       const response = await fetch(ENDPOINT, {
@@ -72,7 +60,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
       if (response.ok) {
         form.reset();
-        showFeedback('Mensaje enviado correctamente', true);
       } else {
         let msg = 'No se pudo enviar. Intenta nuevamente.';
         try {
@@ -91,13 +78,5 @@ document.addEventListener('DOMContentLoaded', () => {
         submitButton.textContent = prevText || 'Enviar';
       }
     }
-  });
-
-  if (popupClose) popupClose.addEventListener('click', hidePopup);
-  window.addEventListener('click', (ev) => {
-    if (popup && ev.target === popup) hidePopup();
-  });
-  window.addEventListener('keydown', (ev) => {
-    if (ev.key === 'Escape') hidePopup();
   });
 });
